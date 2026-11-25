@@ -7,8 +7,15 @@ class ApiSettingsTest {
     @Test fun `legacy OpenRouter base addresses migrate to the Jev compatibility route`() {
         for (address in listOf("https://openrouter.ai", "https://openrouter.ai/api/v1",
             "https://openrouter.ai/api/v1/chat/completions")) {
-            assertEquals("https://openrouter.ai/api/v1/systemone", ApiSettings.fromInput(address, "test").endpoint)
+            assertEquals("https://openrouter.ai/api/alpha/decisions", ApiSettings.fromInput(address, "test").endpoint)
         }
+    }
+
+    @Test fun `retired openrouter systemone address migrates to a relayable path`() {
+        val settings = ApiSettings.fromInput("https://openrouter.ai/api/v1/systemone", "test")
+        assertEquals(JevProvider.OPENROUTER, settings.provider)
+        assertEquals("https://openrouter.ai/api/alpha/decisions", settings.endpoint)
+        assertFalse(settings.endpoint.endsWith("/systemone"))
     }
 
     @Test fun `Vercel gateway address uses the TypeSafe compatibility route`() {
@@ -18,7 +25,7 @@ class ApiSettingsTest {
 
     @Test fun `provider models are selected together with their endpoints`() {
         assertEquals("jev-1.13.0", ApiSettings.fromInput("", "test").model)
-        assertEquals("typesafe/jev-1.13", ApiSettings.fromInput("https://openrouter.ai/api/v1", "test").model)
+        assertEquals("typesafe/jev-router", ApiSettings.fromInput("https://openrouter.ai/api/v1", "test").model)
         assertEquals("typesafe-ai/jev", ApiSettings.fromInput("https://ai-gateway.vercel.sh", "test").model)
         assertEquals("my-jev", ApiSettings.fromInput("https://example.org/jev", "test", "custom", "my-jev").model)
     }
@@ -27,7 +34,7 @@ class ApiSettingsTest {
         val settings = ApiSettings.fromInput(ApiSettings.DEFAULT_ENDPOINT, "test", "openrouter", "jev-1.13.0")
         assertEquals(JevProvider.OPENROUTER, settings.provider)
         assertEquals(JevProvider.OPENROUTER.endpoint, settings.endpoint)
-        assertEquals("typesafe/jev-1.13", settings.model)
+        assertEquals("typesafe/jev-router", settings.model)
     }
 
     @Test fun `unknown hosts and nonstandard paths remain custom during migration`() {

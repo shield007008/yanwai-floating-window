@@ -10,7 +10,7 @@ enum class JevProvider(
     TYPESAFE("typesafe", "Jev 官方 · TypeSafe", "https://api.typesafe.ai/v1/systemone", "jev-1.13.0",
         "https://console.typesafe.ai/", "https://docs.typesafe.ai/introduction/quickstart",
         "1. 打开 TypeSafe 控制台，注册或登录。\n2. 在控制台创建 API Key；若提示等待开通，先选择其他渠道。\n3. 将 Key 粘贴到下方，保存并检测连接。"),
-    OPENROUTER("openrouter", "OpenRouter", "https://openrouter.ai/api/v1/systemone", "typesafe/jev-1.13",
+    OPENROUTER("openrouter", "OpenRouter", "https://openrouter.ai/api/alpha/decisions", "typesafe/jev-router",
         "https://openrouter.ai/settings/keys", "https://openrouter.ai/docs/guides/community/typesafe-sdk",
         "1. 注册或登录 OpenRouter，进入 Keys，点击 Create Key。\n2. 确认账户有可用额度，无需另申请 TypeSafe Key。\n3. 复制 Key 到下方，保存并检测连接。"),
     VERCEL("vercel", "Vercel AI Gateway", "https://ai-gateway.vercel.sh/typesafe/v1/systemone", "typesafe-ai/jev",
